@@ -2,17 +2,18 @@ PRN_Satellite;
 Ts = 1/(5.714e6);
 f_PRN = f0/10;
 close all;
+f_if = 154*10.23e6;
 
 [Sampled_Code_PRN_1, Code_PRN_1] = SampledCA(1, Ts);
-%[Sampled_Code_PRN_2, Code_PRN_2] = SampledCA(2, Ts);
+[Sampled_Code_PRN_2, Code_PRN_2] = SampledCA(2, Ts);
 Sampled_Code_PRN_2 = ShiftedSampledCA(1,Ts,200);
 cross_corrCA = fcxcorr(Code_PRN_1, Code_PRN_2)/(norm(Code_PRN_1)*norm(Code_PRN_2));
-mod_1 = fn_CreateCarrier(1/Ts, 0, 0.001, Ts, 0).*Sampled_Code_PRN_1;
-mod_2 = fn_CreateCarrier(1/Ts, 0, 0.001, Ts, 0).*Sampled_Code_PRN_2;
+mod_1 = fn_CreateCarrier(f_if, 0, 0.001, Ts, 0).*Sampled_Code_PRN_1';
+mod_2 = fn_CreateCarrier(f_if, 0, 0.001, Ts, 0).*Sampled_Code_PRN_2';
 
 lags_CA = (1:length(cross_corrCA))/f_PRN;
-cross_corrSampledCA = fcxcorr(mod_1, mod_2)/(norm(mod_1)*norm(mod_2));
-%cross_corrSampledCA = fcxcorr(Sampled_Code_PRN_1, Sampled_Code_PRN_2)/(norm(Sampled_Code_PRN_1)*norm(Sampled_Code_PRN_1));
+%cross_corrSampledCA = fcxcorr(mod_1, mod_2)/(norm(mod_1)*norm(mod_2));
+cross_corrSampledCA = fcxcorr(Sampled_Code_PRN_1, Sampled_Code_PRN_2)/(norm(Sampled_Code_PRN_1)*norm(Sampled_Code_PRN_1));
 lags_SampledCA = (1:length(cross_corrSampledCA))/f_PRN;
 
 h_figure_1 = figure('Name', 'Crosscorrelation functions');
@@ -27,3 +28,11 @@ xlabel(h_subplot_1, 'time');
 ylabel(h_subplot_1, 'cross-correlation');
 xlabel(h_subplot_2, 'time');
 ylabel(h_subplot_2, 'cross-correlation');
+
+N = length(mod_1);
+dft_result = fft(mod_1);
+dft_result = dft_result(1:N/2 + 1);
+psd_result = (1/(Fs*N))*abs(dft_result).^2;
+psd_result(2:end - 1) = 2*psd_result(2:end - 1);
+freq = 0:Fs/length(mod_1):Fs/2;
+psd_result_log = 10*log10(psd_result);

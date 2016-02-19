@@ -1,6 +1,6 @@
 function [ GeneratedIncomingIF ] = RcvSigGen( code_delay, init_carrier_phase, Doppler, CN0 )
     f0 = 10.23e6;
-    f_IF = 154*f0;
+    f_IF = 4.3e6;
     f_D = Doppler;
     code_delay = 201.3;%chips
     PRN = 1;
@@ -17,7 +17,7 @@ function [ GeneratedIncomingIF ] = RcvSigGen( code_delay, init_carrier_phase, Do
     n_carrierShift = init_carrier_phase*1/Ts;
     carrier = circshift(carrier,[0,n_carrierShift]);
     %Generate shifted sampled CA code
-    CA = ShiftedSampledCA(PRN,Ts,code_delay*0.001/1023)';
+    CA = ShiftedSampledCA(PRN,Ts,code_delay)';
     %Generate noise
     noise = AWGN(0,sigma,0.001/Ts);
    

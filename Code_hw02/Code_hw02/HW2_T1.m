@@ -1,13 +1,13 @@
 close all; clear all; clc
 
-plotting = 1; % 'all';
+plotting = 4; % 'all';
 
 PIT = 3e-3; 
 prn = 1;
 Ts = 1/5714e3;
 tk = 0:Ts:1e-3;
 tk2 = (0:Ts:1e-3) + PIT;
-delay = 2;
+delay = 0;
 CN0 = 50;
 iniCarrPhase = 0;
 doplr = 0;

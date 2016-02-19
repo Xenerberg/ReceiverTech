@@ -15,20 +15,20 @@ function [Code] = CA(PRN)
     end
     %Convert into BPSK equivalent code
     Code(Code == 0) = -1;
-%     figure;
-%     stairs((1:1023)/f_PRN, Code,'Color','r');
-%     xlabel('time');
-%     ylabel('amplitude');
-%     ylim([-2,2]);
-%     title(strcat('PRN code for GPS Satellite: ', num2str(PRN)));
-%     
-%     auto_result =fcxcorr(Code,Code)/(norm(Code)*norm(Code));
-%     lags = (1:length(auto_result))/f_PRN;
-%     figure;
-%     stem(auto_result,'color','r');
-%     xlabel('time');
-%     ylabel('ACF magnitude');
-%     title('Autocorrelation of PRN code');
+%      figure;
+%      stairs((1:1023)/f_PRN, Code,'Color','r');
+%      xlabel('time');
+%      ylabel('amplitude');
+%      ylim([-2,2]);
+%      title(strcat('PRN code for GPS Satellite: ', num2str(PRN)));
+%      
+%      auto_result =fcxcorr(Code,Code)/(norm(Code)*norm(Code));
+%      lags = (1:length(auto_result))/f_PRN;
+%      figure;
+%      stem(auto_result,'color','r');
+%      xlabel('time');
+%      ylabel('ACF magnitude');
+%      title('Autocorrelation of PRN code');
 end
 
 function [v_newState, output] = fn_Shift(v_oldState, v_feedback, v_output)
